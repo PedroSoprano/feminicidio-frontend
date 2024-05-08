@@ -9,7 +9,6 @@ import {
   DialogTitle,
   Divider,
   FormControl,
-  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -24,7 +23,6 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
 import { api } from "../../service/api";
-import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 interface IPropsForm {
   vitimaId?: string;
@@ -60,7 +58,8 @@ export const schema = Yup.object()
     filhosdescrever: Yup.number(),
     lat: Yup.string(),
     lng: Yup.string(),
-    sites_in_bulk: Yup.array(),
+    sites_in_bulk: Yup.string(),
+    crimepassion: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -70,7 +69,6 @@ export function CreateVictim(props: IPropsForm) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
-  const [links, setLinks] = React.useState<string[]>([]);
 
   const { addCount } = useRefresh();
 
@@ -84,31 +82,11 @@ export function CreateVictim(props: IPropsForm) {
   });
 
   const onSubmit = (data: any) => {
-    data.sites_in_bulk = links;
     api.post("/api/vitimas/", data).then((res) => {
       addCount();
       handleClose();
       toast.success("Vítima criada com sucesso!");
     });
-  };
-
-  const handleAddLink = () => {
-    // Adiciona um novo link ao estado de links
-    setLinks([...links, ""]);
-  };
-
-  const handleRemoveLink = (index: number) => {
-    // Remove o link do estado de links com base no índice
-    const updatedLinks = [...links];
-    updatedLinks.splice(index, 1);
-    setLinks(updatedLinks);
-  };
-
-  const handleLinkChange = (index: number, value: string) => {
-    // Atualiza o link no estado de links com base no índice
-    const updatedLinks = [...links];
-    updatedLinks[index] = value;
-    setLinks(updatedLinks);
   };
 
   const handleClose = () => {
@@ -559,6 +537,21 @@ export function CreateVictim(props: IPropsForm) {
               </FormControl>
               <FormControl variant="filled">
                 <InputLabel>
+                  {errors.crimepassion?.message ?? "crimepassion"}
+                </InputLabel>
+                <Select
+                  label={errors.crimepassion?.message ?? "crimepassion"}
+                  {...register("crimepassion")}
+                  error={!!errors.crimepassion?.message}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"NA"}>NA</MenuItem>
+                  <MenuItem value={"sim"}>sim</MenuItem>
+                  <MenuItem value={"nao"}>nao</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl variant="filled">
+                <InputLabel>
                   {errors.presencafilhofamiliar?.message ??
                     "presencafilhofamiliar"}
                 </InputLabel>
@@ -600,28 +593,17 @@ export function CreateVictim(props: IPropsForm) {
               />
             </Box>
             <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
-              Links de Referência:
+              Link de Referência:
             </Typography>
             <Box>
-              {links.map((link, index) => (
-                <Box key={index}>
-                  <TextField
-                    label={`Link ${index + 1}`}
-                    value={link}
-                    onChange={(e) => handleLinkChange(index, e.target.value)}
-                    variant="filled"
-                    sx={{width: '93%', mb: 1}}
-                  />
-                  <IconButton onClick={() => handleRemoveLink(index)}>
-                    <CancelOutlinedIcon />
-                  </IconButton>
-                </Box>
-              ))}
+              <TextField
+                variant="filled"
+                label={errors.sites_in_bulk?.message ?? "Link"}
+                sx={{width: '93%', mb: 1}}
+                {...register("sites_in_bulk")}
+                error={!!errors.sites_in_bulk?.message}
+              />
             </Box>
-             {/* Botão para adicionar mais links de referência  */}
-            <Button variant="contained" onClick={handleAddLink}>
-              Adicionar Link
-            </Button> 
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>
               <Button onClick={handleClose} variant="text">
                 Cancelar

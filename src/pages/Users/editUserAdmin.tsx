@@ -163,7 +163,7 @@ export function EditUser({ id }: { id: string }) {
                   >
                     <MenuItem value={"Administrador"}>Administrador</MenuItem>
                     <MenuItem value={"Digitador"}>Digitador</MenuItem>
-                    <MenuItem value={"Pesquisador"}>Editor</MenuItem>
+                    <MenuItem value={"Editor"}>Editor</MenuItem>
                     <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
                   </Select>
                 </FormControl>

@@ -4,7 +4,7 @@ export interface IVictims {
     horario: string;
     turno: string;
     nome: string;
-    idade?: number; // O campo idade é opcional, conforme definido em Yup.number()
+    idade?: number;
     racacor1: string;
     estciv2: string;
     bairro: string;
@@ -26,4 +26,5 @@ export interface IVictims {
     filhosdescrever: number;
     lat: string;
     lng: string;
+    crimepassion: string;
   }
