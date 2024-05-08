@@ -28,13 +28,21 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
-    nome: Yup.string().optional(),
-    email: Yup.string().optional(),
-    telefone: Yup.string().optional(),
+    nome: Yup.string()
+      .trim()
+      .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras')
+      .optional(),
+    email: Yup.string()
+      .email("E-mail deve ter um formato válido: exemplo@mail.com.br")
+      .optional(),
+    telefone: Yup.string()
+      .matches(/^[0-9]+$/, 'Telefone deve conter apenas números')
+      .optional(),
     perfil: Yup.string().optional(),
     senha: Yup.string().optional(),
   })
   .required();
+
 type FormData = Yup.InferType<typeof schema>;
 
 export function EditUser({ id }: { id: string }) {

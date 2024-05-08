@@ -24,12 +24,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useToken } from "../../shared/hooks/auth";
 
-const schema = yup
-  .object({
-    email: yup.string().required("E-mail é um campo obrigatório"),
-    senha: yup.string().required("Senha é um campo obrigatório"),
-  })
-  .required();
+const schema = yup.object({
+  email: yup.string()
+    .required("E-mail é um campo obrigatório")
+    .email("E-mail deve ter um formato válido, exemplo@mail.com.br"),
+  senha: yup.string().required("Senha é um campo obrigatório"),
+}).required();
+
 type FormData = yup.InferType<typeof schema>;
 
 export default function SignIn() {

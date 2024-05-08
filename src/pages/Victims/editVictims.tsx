@@ -264,13 +264,13 @@ export function EditVictims(props: IPropsForm) {
                 variant="filled"
               />
               <TextField
-                label={errors.lat?.message ?? "lat"}
+                label={errors.lat?.message ?? "X_Lati"}
                 {...register("lat")}
                 error={!!errors.lat?.message}
                 variant="filled"
               />
               <TextField
-                label={errors.lng?.message ?? "lng"}
+                label={errors.lng?.message ?? "Y_Long"}
                 {...register("lng")}
                 error={!!errors.lng?.message}
                 variant="filled"
@@ -562,6 +562,18 @@ export function EditVictims(props: IPropsForm) {
                 {...register("filhosdescrever")}
                 error={!!errors.filhosdescrever?.message}
                 variant="filled"
+              />
+            </Box>
+            <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
+              Link de Referência:
+            </Typography>
+            <Box>
+              <TextField
+                variant="filled"
+                label={errors.sites_in_bulk?.message ?? "Link"}
+                sx={{width: '93%', mb: 1}}
+                {...register("sites_in_bulk")}
+                error={!!errors.sites_in_bulk?.message}
               />
             </Box>
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>

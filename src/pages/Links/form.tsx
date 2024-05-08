@@ -42,6 +42,7 @@ export const schema = Yup.object()
     filhosdescrever: Yup.number(),
     lat: Yup.string(),
     lng: Yup.string(),
+    sites_in_bulk: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -439,13 +440,13 @@ export function Form(props: IPropsForm) {
           variant="filled"
         />
         <TextField
-          label={errors.lat?.message ?? "lat"}
+          label={errors.lat?.message ?? "X_Lati"}
           {...register("lat")}
           error={!!errors.lat?.message}
           variant="filled"
         />
         <TextField
-          label={errors.lng?.message ?? "lng"}
+          label={errors.lng?.message ?? "Y_Long"}
           {...register("lng")}
           error={!!errors.lng?.message}
           variant="filled"

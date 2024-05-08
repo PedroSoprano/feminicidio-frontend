@@ -16,13 +16,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { registerUser } from "../../service/users";
 
-const schema = yup
-  .object({
-    nome: yup.string().required("Nome é um campo obrigatório"),
-    email: yup.string().required("E-mail é um campo obrigatório"),
-    telefone: yup.string().required("Telefone é um campo obrigatório"),
-  })
-  .required();
+const schema = yup.object({
+  nome: yup.string()
+    .required("Nome é um campo obrigatório")
+    .trim()
+    .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras'),
+  email: yup.string()
+    .required("E-mail é um campo obrigatório")
+    .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
+  telefone: yup.string()
+    .required("Telefone é um campo obrigatório")
+    .matches(/^[0-9]+$/, 'Telefone deve conter apenas números'),
+}).required();
+
 type FormData = yup.InferType<typeof schema>;
 
 export default function Register() {

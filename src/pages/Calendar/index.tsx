@@ -1,8 +1,8 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { title, toolbarMobile, toolbarWeb } from "../../styles";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import { CreateHoliday } from "./createHoliday";
@@ -10,6 +10,8 @@ import UpdateIcon from "@mui/icons-material/Update";
 import React from "react";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { deleteHoliday, findManyHoliday } from "../../service/calendar";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 // Definindo o tipo dos feriados
 interface Holiday {
@@ -20,7 +22,6 @@ interface Holiday {
   type:string;
   pontoFacultativo: boolean;
 }
-
 
 export function Calendar() {
   const [rows, setRows] = useState<Holiday[]>([]);
@@ -140,14 +141,12 @@ export function Calendar() {
     const anoAtualNovo = anoAtual + 1;
     setAnoAtual(anoAtualNovo);
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
-    // Não chama listAll() aqui
   };
   
   const handleVoltarParaAnoAtual = () => {
     const anoAtualReal = new Date().getFullYear();
     setAnoAtual(anoAtualReal);
     localStorage.setItem("anoAtual", anoAtualReal.toString());
-    // Não chama listAll() aqui
   };
 
   const DeleteHoliday = (id: string) => {
@@ -163,11 +162,101 @@ export function Calendar() {
       });
   };
 
+  const [search, setSearch] = useState({ column: "", value: "" });
+  const [rowsFiltered, setRowsFiltered] = useState<any>([]);
+
+  const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearch((state) => ({
+      ...state,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleColumn = (event: SelectChangeEvent) => {
+    setSearch((state) => ({
+      ...state,
+      [event.target.name]: event.target.value.trim(),
+    }));
+  };
+
+  const handleSearch = () => {
+    if (search.column === "" || search.value === "") {
+      toast.error("Campo coluna e pesquisa não pode ser vazio");
+    } else {
+      const findRows = rows.filter((item: any) =>
+        String(item[search.column])
+          .toLowerCase()
+          .includes(String(search.value).toLowerCase())
+      );
+      if (findRows.length === 0) {
+        toast.error("Nenhum resultado encontrado para esta pesquisa.");
+      }
+      setRowsFiltered(findRows);
+    }
+  };
+
+  const handleClear = () => {
+    setSearch({ column: "", value: "" });
+    setRowsFiltered([]);
+  };
+
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
         <Typography sx={title}>Calendário</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
+        <FormControl sx={{ minWidth: 140 }} size="small">
+            <InputLabel id="demo-select-small">Coluna</InputLabel>
+            <Select
+              name="column"
+              value={search.column}
+              labelId="demo-select-small"
+              id="demo-select-small"
+              label="coluna"
+              onChange={handleColumn}
+            >
+              <MenuItem value={"date"}>Data</MenuItem>
+              <MenuItem value={"diaSemana"}>Dia da semana</MenuItem>
+              <MenuItem value={"name"}>Feriado</MenuItem>
+              <MenuItem value={"type"}>Tipo</MenuItem>
+              <MenuItem value={"pontoFacultativo"}>Ponto facultativo</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl size="small" sx={{ minWidth: 140 }}>
+            <TextField
+              name="value"
+              color="secondary"
+              variant="outlined"
+              label="Pesquisar"
+              value={search.value}
+              onChange={handleValue}
+              onKeyDown={({ key }) => key === "Enter" && handleSearch()}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      type="submit"
+                      onClick={() => {
+                        handleSearch();
+                      }}
+                      aria-label="search"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleClear();
+                      }}
+                      aria-label="delete"
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
           <Button
             onClick={handleAnoAtualChange}
             variant="outlined"
@@ -185,16 +274,20 @@ export function Calendar() {
           <CreateHoliday />
         </Box>
       </Box>
-      <TableGrid
-        rows={rows}
-        columns={columns}
-        onDelete={DeleteHoliday}
-        titleDelete="Excluir feriado"
-        subtitleDelete="Deseja mesmo excluir essa informação?"
-      />
-      <Typography sx={{ fontWeight: "lighter" }}>
-        Ano Atual: {anoAtual}
-      </Typography>
+      {!loading && (
+      <>
+        <TableGrid
+          rows={rowsFiltered.length > 0 ? rowsFiltered : rows}
+          columns={columns}
+          onDelete={DeleteHoliday}
+          titleDelete="Excluir feriado"
+          subtitleDelete="Deseja mesmo excluir essa informação?"
+        />
+        <Typography sx={{ fontWeight: "lighter" }}>
+          Ano Atual: {anoAtual}
+        </Typography>
+      </>
+    )}
     </>
   );
 }

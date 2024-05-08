@@ -59,7 +59,6 @@ export const schema = Yup.object()
     lat: Yup.string(),
     lng: Yup.string(),
     sites_in_bulk: Yup.string(),
-    crimepassion: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -272,13 +271,13 @@ export function CreateVictim(props: IPropsForm) {
                 variant="filled"
               />
               <TextField
-                label={errors.lat?.message ?? "lat"}
+                label={errors.lat?.message ?? "X_Lati"}
                 {...register("lat")}
                 error={!!errors.lat?.message}
                 variant="filled"
               />
               <TextField
-                label={errors.lng?.message ?? "lng"}
+                label={errors.lng?.message ?? "Y_Long"}
                 {...register("lng")}
                 error={!!errors.lng?.message}
                 variant="filled"
@@ -528,21 +527,6 @@ export function CreateVictim(props: IPropsForm) {
                   label={errors.compexcomp?.message ?? "compexcomp"}
                   {...register("compexcomp")}
                   error={!!errors.compexcomp?.message}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"NA"}>NA</MenuItem>
-                  <MenuItem value={"sim"}>sim</MenuItem>
-                  <MenuItem value={"nao"}>nao</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl variant="filled">
-                <InputLabel>
-                  {errors.crimepassion?.message ?? "crimepassion"}
-                </InputLabel>
-                <Select
-                  label={errors.crimepassion?.message ?? "crimepassion"}
-                  {...register("crimepassion")}
-                  error={!!errors.crimepassion?.message}
                   defaultValue={""}
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
