@@ -9,7 +9,6 @@ import {
   TableRow,
   TablePagination,
 } from "@mui/material";
-import { findImlData, findManyIml } from "../../service/iml";
 import { colors } from "../../shared/theme";
 
 export interface Row {
@@ -23,23 +22,16 @@ export interface Row {
 }
 
 interface rowProps {
-  rows: Row[]
+  rows: Row[];
 }
-export const SimpleTableIml = (props:rowProps) => {
-  const [rows, setRows] = useState<Row[]>([]);
+
+export const SimpleTableIml = (props: rowProps) => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(25);
 
   useEffect(() => {
-    setLoading(true);
-    findManyIml();
-    findImlData()
-      .then((res) => {
-        setRows(res.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    setLoading(false);
   }, []);
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -55,16 +47,28 @@ export const SimpleTableIml = (props:rowProps) => {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight:"calc(100vh - 248px)" }}>
+      <TableContainer sx={{ maxHeight: "calc(100vh - 248px)" }}>
         <Table stickyHeader aria-label="sticky table">
-          <TableHead sx={{position: 'sticky', top: 0 }}>
+          <TableHead sx={{ position: "sticky", top: 0 }}>
             <TableRow>
-              <TableCell sx={{ background: colors.primary_lightest}}>Data</TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>Hora</TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>Sexo</TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>Idade</TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>Bairro da remoção</TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>Causa da morte</TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Data
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Hora
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Sexo
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Idade
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Bairro da remoção
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Causa da morte
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -85,12 +89,12 @@ export const SimpleTableIml = (props:rowProps) => {
         <TablePagination
           rowsPerPageOptions={[25, 50, 100]}
           component="div"
-          count={rows.length}
+          count={props.rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ position: 'sticky', bottom: 0, background: colors.background_base }}
+          sx={{ position: "sticky", bottom: 0, background: colors.background_base }}
         />
       </TableContainer>
     </Paper>

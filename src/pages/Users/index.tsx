@@ -87,13 +87,25 @@ export function Users() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      //setCount(prevCount => prevCount + 1);
-
-      const findRows = rows.filter(
-        (item) =>
-          String(item[search.column]).toLowerCase() ===
-          String(search.value).toLowerCase()
-      );
+      const findRows = rows.filter((item) => {
+        const columnValue = String(item[search.column]).toLowerCase();
+        const searchValue = String(search.value).toLowerCase();
+        
+        // Verifica se a coluna começa com o valor de pesquisa
+        if (columnValue.startsWith(searchValue)) {
+          return true;
+        }
+        
+        // Verifica se a coluna contém o valor de pesquisa
+        if (columnValue.includes(searchValue)) {
+          return true;
+        }
+        
+        // Adicione mais condições de comparação aqui, se necessário
+  
+        return false;
+      });
+  
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }

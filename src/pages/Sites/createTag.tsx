@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import EditIcon from "@mui/icons-material/Edit";
 import { useTheme } from "@mui/material/styles";
 import { caixaTag } from "../../styles";
 import {
@@ -28,6 +29,8 @@ export function CreateTag() {
   const [tags, setTags] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [inputValue, setInputValue] = useState("");
+  const [selectedTagIndex, setSelectedTagIndex] = useState<number>(-1);
+  const [editMode, setEditMode] = useState(false);
 
   const handleRemoverTag = (tagRemovida: string) => {
     setLoading(true);
@@ -49,6 +52,9 @@ export function CreateTag() {
 
   const handleClickOpen = () => {
     setOpen(true);
+    setEditMode(false); // Resetar o modo de edição ao abrir o modal
+    setInputValue(""); // Limpar o campo de entrada ao abrir o modal
+    setSelectedTagIndex(-1); // Resetar o índice da tag selecionada
   };
 
   const handleClose = () => {
@@ -65,20 +71,59 @@ export function CreateTag() {
   };
 
   const handleAdicionarTag = () => {
+    if (inputValue.trim() === "") {
+      toast.error("Por favor, insira um valor para a tag.");
+      return; // Se o input estiver vazio, interrompe a função
+    }
     setLoading(true);
-    if (inputValue.trim() !== "") {
+    api
+      .post("/api/tag/", { nome: inputValue })
+      .then(() => {
+        toast.success("Tag criada com sucesso");
+        setTags([...tags, inputValue]);
+        setInputValue("");
+        setLoading(false);
+      })
+      .catch((error: any) => {
+        setLoading(false);
+        toast.error(error.message);
+      });
+  };
+  
+  const handleEditarTag = () => {
+    if (inputValue.trim() === "") {
+      toast.error("Por favor, insira um valor para a tag.");
+      return; // Se o input estiver vazio, interrompe a função
+    }
+    if (selectedTagIndex !== -1) {
+      const tagEditada = inputValue;
+      const tagAntiga = tags[selectedTagIndex];
+      setLoading(true);
       api
-        .post("/api/tag/", { nome: inputValue })
+        .patch(`/api/tag/${tagAntiga}`, { nome: tagEditada })
         .then(() => {
-          toast.success("Tag criada com sucesso");
-          setTags([...tags, inputValue]);
+          const novasTags = [...tags];
+          novasTags[selectedTagIndex] = inputValue;
+          setTags(novasTags);
           setInputValue("");
           setLoading(false);
+          toast.success(`Tag ${tagAntiga} editada para ${tagEditada}`);
+          setEditMode(false);
         })
         .catch((error: any) => {
           setLoading(false);
           toast.error(error.message);
         });
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      if (editMode) {
+        handleEditarTag();
+      } else {
+        handleAdicionarTag();
+      }
     }
   };
 
@@ -105,11 +150,11 @@ export function CreateTag() {
     <>
       <Button
         variant="outlined"
-        endIcon={<AddCircleIcon />}
+        endIcon={editMode ? <EditIcon /> : <AddCircleIcon />}
         onClick={handleClickOpen}
         disabled={loading}
       >
-        Adicionar Tags
+        {editMode ? "Editar Tag" : "Adicionar Tags"}
       </Button>
       <Box component="form">
         <Dialog
@@ -119,7 +164,7 @@ export function CreateTag() {
         >
           <Box>
             <DialogTitle sx={{ fontWeight: 600 }}>
-              {"Adicionar Tags"}
+              {editMode ? "Editar Tag" : "Adicionar Tags"}
             </DialogTitle>
             <Typography
               sx={{
@@ -128,7 +173,9 @@ export function CreateTag() {
                 marginBottom: 3,
               }}
             >
-              {"Preencha as informações para cadastrar uma nova tag."}
+              {editMode
+                ? "Preencha a nova informação para editar a tag."
+                : "Preencha as informações para cadastrar uma nova tag."}
             </Typography>
           </Box>
           <Divider sx={{ marginBottom: 1 }} />
@@ -137,20 +184,25 @@ export function CreateTag() {
               label="Tag"
               value={inputValue}
               onChange={handleChangeInput}
+              onKeyDown={handleKeyDown}
               variant="filled"
               fullWidth
             />
-            <IconButton onClick={handleAdicionarTag}>
-              <AddCircleIcon />
+            <IconButton
+              onClick={editMode ? handleEditarTag : handleAdicionarTag}
+            >
+              {editMode ? <EditIcon /> : <AddCircleIcon />}
             </IconButton>
           </DialogContent>
           {loading ? (
-            <Box sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              ...caixaTag
-            }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                ...caixaTag,
+              }}
+            >
               <CircularProgress />
             </Box>
           ) : (
@@ -161,14 +213,31 @@ export function CreateTag() {
                     key={index}
                     label={tag}
                     onDelete={() => handleRemoverTag(tag)}
+                    onClick={() => {
+                      if (selectedTagIndex === index) {
+                        // Se a mesma tag for clicada novamente, desativa o modo de edição
+                        setEditMode(false);
+                        setInputValue(""); // Limpa o valor do input
+                        setSelectedTagIndex(-1); // Resetar o índice da tag selecionada
+                      } else {
+                        // Se for uma nova tag clicada, ativa o modo de edição e define a tag selecionada
+                        setEditMode(true);
+                        setInputValue(tag); // Define o valor da tag selecionada no input
+                        setSelectedTagIndex(index); // Define o índice da tag selecionada
+                      }
+                    }}
                     sx={{
                       background: "#fff",
                       mt: 2,
                       mr: 1,
                       // Adicionando a classe 'tag-highlight' às duas primeiras tags
                       ...(index < 2 && {
-                        '&.MuiChip-root': { backgroundColor: colors.primary_base, fontWeight: 'bold', color: colors.background_base },
-                      })
+                        "&.MuiChip-root": {
+                          backgroundColor: colors.primary_base,
+                          fontWeight: "bold",
+                          color: colors.background_base,
+                        },
+                      }),
                     }}
                   />
                 ))

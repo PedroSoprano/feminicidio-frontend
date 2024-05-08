@@ -60,7 +60,7 @@ export const schema = Yup.object()
     filhosdescrever: Yup.number(),
     lat: Yup.string(),
     lng: Yup.string(),
-    sites: Yup.array(),
+    sites_in_bulk: Yup.array(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -70,7 +70,7 @@ export function CreateVictim(props: IPropsForm) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
-  //const [links, setLinks] = React.useState<string[]>([]);
+  const [links, setLinks] = React.useState<string[]>([]);
 
   const { addCount } = useRefresh();
 
@@ -84,7 +84,7 @@ export function CreateVictim(props: IPropsForm) {
   });
 
   const onSubmit = (data: any) => {
-    //data.sites = links;
+    data.sites_in_bulk = links;
     api.post("/api/vitimas/", data).then((res) => {
       addCount();
       handleClose();
@@ -92,7 +92,7 @@ export function CreateVictim(props: IPropsForm) {
     });
   };
 
-/*   const handleAddLink = () => {
+  const handleAddLink = () => {
     // Adiciona um novo link ao estado de links
     setLinks([...links, ""]);
   };
@@ -109,7 +109,7 @@ export function CreateVictim(props: IPropsForm) {
     const updatedLinks = [...links];
     updatedLinks[index] = value;
     setLinks(updatedLinks);
-  }; */
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -168,7 +168,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.racacor1?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"branca"}>branca</MenuItem>
                   <MenuItem value={"indigena"}>indigena</MenuItem>
                   <MenuItem value={"parda"}>parda</MenuItem>
@@ -184,7 +184,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.estciv2?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"solteira"}>solteira</MenuItem>
                   <MenuItem value={"casada"}>casada</MenuItem>
                   <MenuItem value={"viuva"}>viuva</MenuItem>
@@ -211,7 +211,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.diah?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"dom"}>Dom</MenuItem>
                   <MenuItem value={"seg"}>Seg</MenuItem>
                   <MenuItem value={"ter"}>Ter</MenuItem>
@@ -235,7 +235,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.turno?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"madrugada"}>madrugada</MenuItem>
                   <MenuItem value={"manha"}>manha</MenuItem>
                   <MenuItem value={"tarde"}>tarde</MenuItem>
@@ -269,7 +269,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.zona?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"Norte"}>Norte</MenuItem>
                   <MenuItem value={"Oeste"}>Oeste</MenuItem>
                   <MenuItem value={"Leste"}>Leste</MenuItem>
@@ -327,7 +327,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.tipoarma1?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
                   <MenuItem value={"vidro"}>vidro</MenuItem>
                   <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -359,7 +359,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.tipoarma2?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
                   <MenuItem value={"vidro"}>vidro</MenuItem>
                   <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -401,7 +401,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.loclesao1?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
                   <MenuItem value={"pescoco"}>pescoco</MenuItem>
                   <MenuItem value={"torax"}>torax</MenuItem>
@@ -419,7 +419,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.loclesao2?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
                   <MenuItem value={"pescoco"}>pescoco</MenuItem>
                   <MenuItem value={"torax"}>torax</MenuItem>
@@ -437,7 +437,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.loclesao3?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
                   <MenuItem value={"pescoco"}>pescoco</MenuItem>
                   <MenuItem value={"torax"}>torax</MenuItem>
@@ -455,7 +455,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.hospitalizacao?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -470,7 +470,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.violsexual?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -485,7 +485,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.latrocinio?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -504,7 +504,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.localdeocorrencia?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"domicilio"}>domicilio</MenuItem>
                   <MenuItem value={"viapublica"}>via publica</MenuItem>
                   <MenuItem value={"estabelecimento comercial"}>
@@ -552,7 +552,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.compexcomp?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -571,7 +571,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.presencafilhofamiliar?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -586,7 +586,7 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.gestacao?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"N/A"}>N/A</MenuItem>
+                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -599,7 +599,7 @@ export function CreateVictim(props: IPropsForm) {
                 variant="filled"
               />
             </Box>
-            {/* <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
+            <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
               Links de Referência:
             </Typography>
             <Box>
@@ -618,10 +618,10 @@ export function CreateVictim(props: IPropsForm) {
                 </Box>
               ))}
             </Box>
-             Botão para adicionar mais links de referência 
+             {/* Botão para adicionar mais links de referência  */}
             <Button variant="contained" onClick={handleAddLink}>
               Adicionar Link
-            </Button> */}
+            </Button> 
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>
               <Button onClick={handleClose} variant="text">
                 Cancelar

@@ -34,25 +34,48 @@ export function Calendar() {
 
   useEffect(() => {
     listAll();
-  }, [count]);
+  }, [count, anoAtual]);
 
   const listAll = () => {
     setLoading(true);
     Promise.all([fetchBackendHolidays(), fetchApiBrasilHolidays()])
       .then(([backendResponse, apiBrasilResponse]) => {
         const backendHolidays = transformBackendData(backendResponse.data);
-        const apiBrasilHolidays = transformApiBrasilData(
-          apiBrasilResponse.data
-        );
+        const apiBrasilHolidays = transformApiBrasilData(apiBrasilResponse.data);
         const mergedHolidays = mergeData(backendHolidays, apiBrasilHolidays);
-        setRows(mergedHolidays);
+        
+        // Ordenar os feriados por data
+        const sortedHolidays = mergedHolidays.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        
+        setRows(sortedHolidays);
         setLoading(false);
+  
+        // Atualizar o ano dos feriados do backend
+        updateBackendHolidaysYear(backendResponse.data);
       })
       .catch((error) => {
         toast.error(error.message);
         setLoading(false);
       });
   };
+  
+  const updateBackendHolidaysYear = (backendData: any[]) => {
+    const updatedBackendHolidays = backendData.map((holiday) => {
+      const newDate = new Date(holiday.ano, holiday.mes - 1, holiday.dia);
+      newDate.setFullYear(anoAtual); // Definir o novo ano
+      return {
+        ...holiday,
+        date: formatDate(`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`),
+      };
+    });
+  
+    // Atualizar os feriados do backend na lista de feriados
+    setRows((prevRows) => {
+      const apiBrasilHolidays = prevRows.filter((holiday) => holiday.id.startsWith("api-"));
+      return [...apiBrasilHolidays, ...transformBackendData(updatedBackendHolidays)];
+    });
+  };
+  
 
   const fetchBackendHolidays = () => {
     return findManyHoliday();
@@ -66,7 +89,7 @@ export function Calendar() {
     // Transformar os dados do backend para o formato comum
     return data.map((holiday) => ({
       id: holiday.id,
-      date: `${holiday.ano}-${holiday.mes}-${holiday.dia}`,
+      date: formatDate(`${holiday.dia}/${holiday.mes}/${holiday.ano}`),
       name: holiday.name,
       diaSemana: getDiaSemana(
         new Date(holiday.ano, holiday.mes - 1, holiday.dia)
@@ -74,6 +97,13 @@ export function Calendar() {
       type: holiday.type,
       pontoFacultativo: holiday.pontoFacultativo
     }));
+  };
+  
+  const formatDate = (dateString: string) => {
+    const [day, month, year] = dateString.split('/');
+    const formattedDay = day.padStart(2, '0'); 
+    const formattedMonth = month.padStart(2, '0');
+    return `${formattedDay}/${formattedMonth}/${year}`;
   };
 
   const transformApiBrasilData = (data: any[]) => {
@@ -93,7 +123,7 @@ export function Calendar() {
     return [...backendData, ...apiBrasilData];
   };
 
-  const getDiaSemana = (date: Date) => {
+  const getDiaSemana = (holidayDate: Date) => {
     const diasDaSemana = [
       "Domingo",
       "Segunda-feira",
@@ -103,19 +133,21 @@ export function Calendar() {
       "Sexta-feira",
       "Sábado",
     ];
-    return diasDaSemana[date.getUTCDay()];
+    return diasDaSemana[holidayDate.getUTCDay()];
   };
 
   const handleAnoAtualChange = () => {
     const anoAtualNovo = anoAtual + 1;
     setAnoAtual(anoAtualNovo);
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
+    // Não chama listAll() aqui
   };
-
+  
   const handleVoltarParaAnoAtual = () => {
     const anoAtualReal = new Date().getFullYear();
     setAnoAtual(anoAtualReal);
     localStorage.setItem("anoAtual", anoAtualReal.toString());
+    // Não chama listAll() aqui
   };
 
   const DeleteHoliday = (id: string) => {
@@ -123,7 +155,7 @@ export function Calendar() {
       .then((response: any) => {
         if (response.status === 200) {
           listAll();
-          toast.success("Usuário excluído com sucesso");
+          toast.success("Feriado excluído com sucesso");
         }
       })
       .catch((error: any) => {

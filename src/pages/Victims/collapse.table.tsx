@@ -200,10 +200,10 @@ function Row(props: IRowsPropsVictims) {
                     {/* Detalhes da Localização */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
-                        Bairro: {props.bairro}
+                        bairro: {props.bairro}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        Rua: {props.rua_beco_travessa_estrada_ramal}
+                        rua: {props.rua_beco_travessa_estrada_ramal}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
                         endcomplemento: {props.endcomplemento}

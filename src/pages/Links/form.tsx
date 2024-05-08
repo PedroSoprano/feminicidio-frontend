@@ -92,7 +92,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.diah?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"dom"}>Dom</MenuItem>
             <MenuItem value={"seg"}>Seg</MenuItem>
             <MenuItem value={"ter"}>Ter</MenuItem>
@@ -116,7 +116,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.turno?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"madrugada"}>madrugada</MenuItem>
             <MenuItem value={"manha"}>manha</MenuItem>
             <MenuItem value={"tarde"}>tarde</MenuItem>
@@ -143,7 +143,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.racacor1?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"branca"}>branca</MenuItem>
             <MenuItem value={"indigena"}>indigena</MenuItem>
             <MenuItem value={"parda"}>parda</MenuItem>
@@ -159,7 +159,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.estciv2?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"solteira"}>solteira</MenuItem>
             <MenuItem value={"casada"}>casada</MenuItem>
             <MenuItem value={"viuva"}>viuva</MenuItem>
@@ -178,7 +178,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.compexcomp?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -197,7 +197,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.zona?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"Norte"}>Norte</MenuItem>
             <MenuItem value={"Oeste"}>Oeste</MenuItem>
             <MenuItem value={"Leste"}>Leste</MenuItem>
@@ -229,7 +229,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.tipoarma1?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"faca"}>faca</MenuItem>
             <MenuItem value={"vidro"}>vidro</MenuItem>
             <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -257,7 +257,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.tipoarma2?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"faca"}>faca</MenuItem>
             <MenuItem value={"vidro"}>vidro</MenuItem>
             <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -285,7 +285,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao1?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -301,7 +301,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao2?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -317,7 +317,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao3?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -335,7 +335,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.hospitalizacao?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -348,7 +348,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.violsexual?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -361,7 +361,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.latrocinio?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -376,7 +376,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.localdeocorrencia?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"domicilio"}>domicilio</MenuItem>
             <MenuItem value={"viapublica"}>via publica</MenuItem>
             <MenuItem value={"estabelecimento comercial"}>
@@ -413,7 +413,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.presencafilhofamiliar?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -426,7 +426,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.gestacao?.message}
             defaultValue={""}
           >
-            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"NA"}>NA</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>

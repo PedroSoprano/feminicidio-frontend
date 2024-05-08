@@ -23,6 +23,7 @@ import { saveAs } from "file-saver";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
 import { CreateVictim } from "./createVictim";
+import { format } from 'date-fns';
 
 export function Victims() {
   const [rows, setRows] = useState([]);
@@ -68,15 +69,22 @@ export function Victims() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      //setCount(prevCount => prevCount + 1);
+      let formattedSearchValue = search.value;
+      if (search.column === "datadofato") {
+        const [day, month, year] = search.value.split("/");
+        formattedSearchValue = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      }
+      
       const findRows = rows.filter((item) =>
         String(item[search.column])
           .toLowerCase()
-          .includes(String(search.value).toLowerCase())
+          .includes(String(formattedSearchValue).toLowerCase())
       );
+      
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }
+      
       setRowsFiltered(findRows);
     }
   };
@@ -120,12 +128,11 @@ export function Victims() {
             >
               <MenuItem value={"nome"}>Nome</MenuItem>
               <MenuItem value={"idade"}>Idade</MenuItem>
-              <MenuItem value={"zona"}>Zona</MenuItem>
-              <MenuItem value={"idade"}>Idade</MenuItem>
-              <MenuItem value={"tipoarma1"}>Tipo arma 1</MenuItem>
-              <MenuItem value={"tipoarma2"}>Tipo arma 2</MenuItem>
               <MenuItem value={"datadofato"}>Data do Fato</MenuItem>
-              <MenuItem value={"filhosdescrever"}>Filhos Descrição</MenuItem>
+              {/*                <MenuItem value={"zona"}>Zona</MenuItem> 
+              <MenuItem value={"tipoarma1"}>Tipo arma 1</MenuItem>
+              <MenuItem value={"tipoarma2"}>Tipo arma 2</MenuItem> 
+                            <MenuItem value={"filhosdescrever"}>Filhos Descrição</MenuItem>
               <MenuItem value={"gestacao"}>Gestação</MenuItem>
               <MenuItem value={"estciv2"}>Estado Civil</MenuItem>
               <MenuItem value={"endcomplemento"}>Endereço Complemento</MenuItem>
@@ -148,7 +155,7 @@ export function Victims() {
                 Rua/Beco/Travessa/Estrada/Ramal
               </MenuItem>
               <MenuItem value={"turno"}>Turno</MenuItem>
-              <MenuItem value={"violsexual"}>Violência Sexual</MenuItem>
+              <MenuItem value={"violsexual"}>Violência Sexual</MenuItem>  */}
             </Select>
           </FormControl>
           <FormControl size="small" sx={{ minWidth: "140px" }}>
@@ -193,7 +200,7 @@ export function Victims() {
           >
             Exportar
           </Button>
-          <CreateVictim/>
+          <CreateVictim />
         </Box>
       </Box>
       {loading ? (

@@ -8,4 +8,12 @@ export function findSearch(){
 };
 export function findContent(idSite: string){
     return api.get('/api/site/'+idSite)
+};
+export async function findSearchLinks(search?: { column: string; value: string; }) {
+    if (search) {
+        return api.get(`/api/site?${encodeURIComponent(search.column)}=${encodeURIComponent(search.value)}`);
+    } else {
+        return api.get('/api/site');
+    }
 }
+

@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 export const columns: GridColDef[] = [
   {
     field: "date",
+    type: "date", // Definindo o tipo de dados da coluna como "date"
     headerName: "Data",
     valueFormatter: (params) => {
       const dateParts = params.value.split("-");
