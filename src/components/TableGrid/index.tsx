@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { table, tableContainer } from "./styles";
 import { ModalDelete } from "../ModalDelete/ModalDelete";
+import { useToken } from "../../shared/hooks/auth";
 
 interface TableGridProps {
   rows: any[];
@@ -17,6 +18,7 @@ interface TableGridProps {
   handleAttReq?: () => void;
 }
 export function TableGrid(props: TableGridProps) {
+  const { perfil } = useToken();
   const actionColumn: GridColDef[] = [
     {
       field: "menu",
@@ -26,11 +28,13 @@ export function TableGrid(props: TableGridProps) {
       editable: false,
       renderCell: ({ row }) => (
         <>
-          <ModalDelete
-            title={props.titleDelete}
-            subtitle={props.subtitleDelete}
-            onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
-          ></ModalDelete>
+          {perfil !== "Digitador" && (
+            <ModalDelete
+              title={props.titleDelete}
+              subtitle={props.subtitleDelete}
+              onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
+            ></ModalDelete>
+          )}
         </>
       ),
     },
@@ -42,11 +46,13 @@ export function TableGrid(props: TableGridProps) {
     }
   };
 
-  const columns = props.onEdit || props.onDelete ? [...props.columns, ...actionColumn] : [...props.columns];
+  const columns =
+    props.onEdit || props.onDelete
+      ? [...props.columns, ...actionColumn]
+      : [...props.columns];
   const matches = useMediaQuery("(max-width:480px)");
-  const telaVitimas = window.location.pathname.includes("victims")
-  console.log(window.location.pathname.includes("victims"))
-
+  const telaVitimas = window.location.pathname.includes("victims");
+  console.log(window.location.pathname.includes("victims"));
 
   return (
     <Box sx={tableContainer}>
@@ -56,8 +62,8 @@ export function TableGrid(props: TableGridProps) {
           ...column,
           ...(matches === false && telaVitimas === false
             ? {
-              flex: 1,
-            }
+                flex: 1,
+              }
             : { width: 150 }),
           sortable: false,
           headerClassName: "super-app-theme--header",

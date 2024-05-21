@@ -76,7 +76,7 @@ export const APP_PAGES_VISUALIZADOR = [
     }
 ]
 
-export const APP_PAGES_PESQUISADOR = [
+export const APP_PAGES_EDITOR = [
     {
         title: 'Dashboard',
         route: '/',

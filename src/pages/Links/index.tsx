@@ -46,10 +46,12 @@ export function Links() {
   
     let searchValue: string | boolean = search.value;
   
-  
     // Convertendo "sim" ou "não" para true ou false se a coluna for "lido" ou "assassinato"
-    if (search.column === "lido" || search.column === "feminicidio") {
+    if (search.column === "lido") {
       searchValue = search.value.toLowerCase() === "sim" ? "true" : "false";
+    }
+    if (search.column === "feminicidio") {
+      searchValue = search.value.toLowerCase() === "sim" ? "true" : "null";
     }
   
     try {
@@ -60,7 +62,6 @@ export function Links() {
     }
   };
   
-
   const handleClear = () => {
     setSearch({ column: "", value: "" });
     setFilterRows([]);

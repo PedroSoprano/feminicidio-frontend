@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { APP_PAGES, APP_PAGES_PESQUISADOR, APP_PAGES_VISUALIZADOR } from '../../../routes/pages.routes';
+import { APP_PAGES, APP_PAGES_EDITOR, APP_PAGES_VISUALIZADOR } from '../../../routes/pages.routes';
 import { colors } from '../../../shared/theme';
 import { useToken } from '../../../shared/hooks/auth';
 
@@ -29,7 +29,7 @@ export function MenuList({ open }: MenuListProps) {
     perfil === "visualizador"
       ? APP_PAGES_VISUALIZADOR
       : perfil === "pesquisador"
-      ? APP_PAGES_PESQUISADOR
+      ? APP_PAGES_EDITOR
       : APP_PAGES
   );
 

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/NotFound";
 import {
   APP_PAGES,
-  APP_PAGES_PESQUISADOR,
+  APP_PAGES_EDITOR,
   APP_PAGES_VISUALIZADOR,
 } from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
@@ -19,7 +19,7 @@ export function AppRoutes() {
     perfil === "visualizador"
       ? APP_PAGES_VISUALIZADOR
       : perfil === "pesquisador"
-      ? APP_PAGES_PESQUISADOR
+      ? APP_PAGES_EDITOR
       : APP_PAGES
   );
 

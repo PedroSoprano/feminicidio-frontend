@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -25,8 +25,41 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 import { IVictims } from "../../models/victims";
 import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
-import { schema } from "../Links/form";
+import * as Yup from "yup";
 
+const schema = Yup.object()
+  .shape({
+    datadofato: Yup.string(),
+    diah: Yup.string(),
+    horario: Yup.string(),
+    turno: Yup.string(),
+    nome: Yup.string(),
+    idade: Yup.number(),
+    racacor1: Yup.string(),
+    estciv2: Yup.string(),
+    bairro: Yup.string(),
+    rua_beco_travessa_estrada_ramal: Yup.string(),
+    endcomplemento: Yup.string(),
+    tipoarma1: Yup.string(),
+    tipoarma2: Yup.string(),
+    loclesao1: Yup.string(),
+    loclesao2: Yup.string(),
+    zona: Yup.string(),
+    loclesao3: Yup.string(),
+    hospitalizacao: Yup.string(),
+    violsexual: Yup.string(),
+    latrocinio: Yup.string(),
+    localdeocorrencia: Yup.string(),
+    presencafilhofamiliar: Yup.string(),
+    compexcomp: Yup.string(),
+    gestacao: Yup.string(),
+    filhosdescrever: Yup.number(),
+    lat: Yup.string(),
+    lng: Yup.string(),
+    sites_in_bulk: Yup.string(),
+  })
+  .required();
+type FormData = Yup.InferType<typeof schema>;
 interface IPropsForm {
   vitimaId: string;
 }
@@ -65,19 +98,29 @@ export function EditVictims(props: IPropsForm) {
 
   const populateFormValues = (data: IVictims) => {
     Object.entries(data).forEach(([key, value]) => {
-      setValue(key as keyof IVictims, value || "");
+      if (key === 'datadofato') {
+        const date = new Date(value as string);
+        const formattedDate = date.toLocaleDateString('pt-BR'); // Formata a data para o formato "dd/mm/aaaa"
+        setValue(key as keyof IVictims, formattedDate || "");
+      } else {
+        setValue(key as keyof IVictims, value || "");
+      }
     });
   };
-  
-  const onSubmit = async (data: any) => {
+
+  const onSubmit = async (data: FormData) => {
     try {
-      await updateVictims(props.vitimaId, data);
+      const { datadofato, ...restData } = data;
+      const formattedData = { ...restData, datadofato: datadofato + "T00:00:00Z" };
+      await updateVictims(props.vitimaId, formattedData);
       toast.success("Informações da vítima atualizadas com sucesso");
       addCount();
       handleClose();
       reset();
     } catch (error: any) {
-      toast.error(error?.response?.data?.detail || "Erro ao atualizar dados da vítima");
+      toast.error(
+        error?.response?.data?.detail || "Erro ao atualizar dados da vítima"
+      );
     }
   };
 
@@ -166,7 +209,6 @@ export function EditVictims(props: IPropsForm) {
                 </Select>
               </FormControl>
               <TextField
-                type="date"
                 label={errors.datadofato?.message ?? "datadofato"}
                 {...register("datadofato")}
                 error={!!errors.datadofato?.message}

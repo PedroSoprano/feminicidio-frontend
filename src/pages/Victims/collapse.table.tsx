@@ -55,6 +55,7 @@ export interface IRowsPropsVictims {
   id: string;
   vitima: string;
   sites: string[];
+  sites_in_bulk: string;
 }
 
 function Row(props: IRowsPropsVictims) {
@@ -129,6 +130,14 @@ function Row(props: IRowsPropsVictims) {
   };
 
   const dataFormatada = formatarData(props.datadofato);
+
+  // Função para converter a string de sites_in_bulk em uma lista de links
+  const parseSitesInBulk = (sitesInBulk: string) => {
+    return sitesInBulk ? sitesInBulk.split(',').map(site => site.trim()) : [];
+  };
+
+  // Lista de sites a partir de sites_in_bulk
+  const sitesInBulkList = parseSitesInBulk(props.sites_in_bulk);
 
   return (
     <React.Fragment>
@@ -272,6 +281,18 @@ function Row(props: IRowsPropsVictims) {
                                 rel="noreferrer"
                               >
                                 {site.link}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {/* Links de referência dos sites_in_bulk */}
+                      {sitesInBulkList && sitesInBulkList.length > 0 && (
+                        <ul>
+                          {sitesInBulkList.map((site: string, index: number) => (
+                            <li key={index}>
+                              <a href={site} target="_blank" rel="noreferrer">
+                                {site}
                               </a>
                             </li>
                           ))}

@@ -22,6 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
+
 export interface Row {
   nome: string;
   link: string;
@@ -31,6 +32,7 @@ export interface Row {
   classificacao: number;
   id: string;
   vitima: any;
+  tagsEncontradas: string;
   refreshList: () => void;
 }
 
@@ -42,7 +44,6 @@ export interface Props {
 export function Row(props: Row) {
   const [open, setOpen] = React.useState(false);
   const { addCount } = useRefresh();
-
 
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
@@ -116,7 +117,7 @@ export function Row(props: Row) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -134,6 +135,9 @@ export function Row(props: Row) {
                   />
                   <Box>
                     <Form idSite={props.id} />
+                    <Typography variant="body2" gutterBottom component="div">
+                      <strong>Tags Encontradas:</strong> {props.tagsEncontradas}
+                    </Typography>
                   </Box>
                 </TableBody>
               </Table>
@@ -152,13 +156,13 @@ export default function CollapsibleTable({ search, filterData }: Props) {
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
-useEffect(()=>{
-  if(search.value.length > 0){
-    setRows(filterData)
-    return
-  }
-  refreshList()
-},[filterData])
+  useEffect(() => {
+    if (search.value.length > 0) {
+      setRows(filterData);
+      return;
+    }
+    refreshList();
+  }, [filterData]);
 
   const refreshList = () => {
     setLoading(true);
@@ -174,7 +178,7 @@ useEffect(()=>{
   useEffect(() => {
     setLoading(true);
     if (!findSitesFetched) {
-      api.get("/api/findSites/").then((res) => {
+      api.get("/api/findSites").then((res) => {
         setLoading(false);
         setFindSitesFetched(true);
       });
@@ -188,7 +192,6 @@ useEffect(()=>{
       .catch(() => setLoading(false));
   }, [findSitesFetched]);
 
-  const currentRows = rows;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentRowsPaginated = rows.slice(indexOfFirstItem, indexOfLastItem);
@@ -230,7 +233,7 @@ useEffect(()=>{
       )}
       <Pagination
         itemsPerPage={itemsPerPage}
-        totalItems={currentRows.length}
+        totalItems={rows.length}
         currentPage={currentPage}
         paginate={paginate}
       />

@@ -94,13 +94,13 @@ export function Form(props: IPropsForm) {
             defaultValue={""}
           >
             <MenuItem value={"NA"}>NA</MenuItem>
-            <MenuItem value={"dom"}>Dom</MenuItem>
-            <MenuItem value={"seg"}>Seg</MenuItem>
-            <MenuItem value={"ter"}>Ter</MenuItem>
-            <MenuItem value={"qua"}>Qua</MenuItem>
-            <MenuItem value={"qui"}>Qui</MenuItem>
-            <MenuItem value={"sex"}>Sex</MenuItem>
-            <MenuItem value={"sab"}>Sab</MenuItem>
+            <MenuItem value={"dom"}>dom</MenuItem>
+            <MenuItem value={"seg"}>seg</MenuItem>
+            <MenuItem value={"ter"}>ter</MenuItem>
+            <MenuItem value={"qua"}>qua</MenuItem>
+            <MenuItem value={"qui"}>qui</MenuItem>
+            <MenuItem value={"sex"}>sex</MenuItem>
+            <MenuItem value={"sab"}>sab</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -199,12 +199,12 @@ export function Form(props: IPropsForm) {
             defaultValue={""}
           >
             <MenuItem value={"NA"}>NA</MenuItem>
-            <MenuItem value={"Norte"}>Norte</MenuItem>
-            <MenuItem value={"Oeste"}>Oeste</MenuItem>
-            <MenuItem value={"Leste"}>Leste</MenuItem>
-            <MenuItem value={"Sul"}>Sul</MenuItem>
-            <MenuItem value={"Centro-Oeste"}>Centro-Oeste</MenuItem>
-            <MenuItem value={"Centro-Sul"}>Centro-Sul</MenuItem>
+            <MenuItem value={"norte"}>norte</MenuItem>
+            <MenuItem value={"oeste"}>oeste</MenuItem>
+            <MenuItem value={"leste"}>leste</MenuItem>
+            <MenuItem value={"sul"}>sul</MenuItem>
+            <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
+            <MenuItem value={"centrosul"}>centrosul</MenuItem>
           </Select>
         </FormControl>
         <TextField
