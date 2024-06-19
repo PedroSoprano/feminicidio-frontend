@@ -29,7 +29,7 @@ import * as Yup from "yup";
 
 const schema = Yup.object()
   .shape({
-    datadofato: Yup.string(),
+    datadofato: Yup.date(),
     diah: Yup.string(),
     horario: Yup.string(),
     turno: Yup.string(),
@@ -53,7 +53,7 @@ const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number(),
+    filhosdescrever: Yup.number().positive("Deve ser um número positivo").optional(),
     lat: Yup.string(),
     lng: Yup.string(),
     sites_in_bulk: Yup.string(),
@@ -98,9 +98,9 @@ export function EditVictims(props: IPropsForm) {
 
   const populateFormValues = (data: IVictims) => {
     Object.entries(data).forEach(([key, value]) => {
-      if (key === 'datadofato') {
+      if (key === "datadofato") {
         const date = new Date(value as string);
-        const formattedDate = date.toLocaleDateString('pt-BR'); // Formata a data para o formato "dd/mm/aaaa"
+        const formattedDate = date.toISOString().split("T")[0]; // Converte a data para o formato "yyyy-mm-dd"
         setValue(key as keyof IVictims, formattedDate || "");
       } else {
         setValue(key as keyof IVictims, value || "");
@@ -111,7 +111,10 @@ export function EditVictims(props: IPropsForm) {
   const onSubmit = async (data: FormData) => {
     try {
       const { datadofato, ...restData } = data;
-      const formattedData = { ...restData, datadofato: datadofato + "T00:00:00Z" };
+      const formattedData = {
+        ...restData,
+        datadofato: datadofato + "T00:00:00Z",
+      };
       await updateVictims(props.vitimaId, formattedData);
       toast.success("Informações da vítima atualizadas com sucesso");
       addCount();
@@ -179,7 +182,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.racacor1?.message ?? "racacor1"}
                   {...register("racacor1")}
                   error={!!errors.racacor1?.message}
-                  defaultValue={userData ? (userData.racacor1 !== null && userData.racacor1 !== "N/A" ? userData.racacor1 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.racacor1 !== null &&
+                        userData.racacor1 !== "N/A"
+                        ? userData.racacor1
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"branca"}>branca</MenuItem>
@@ -195,7 +205,13 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.estciv2?.message ?? "estciv2"}
                   {...register("estciv2")}
                   error={!!errors.estciv2?.message}
-                  defaultValue={userData ? (userData.estciv2 !== null && userData.estciv2 !== "N/A" ? userData.estciv2 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.estciv2 !== null && userData.estciv2 !== "N/A"
+                        ? userData.estciv2
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"solteira"}>solteira</MenuItem>
@@ -209,6 +225,7 @@ export function EditVictims(props: IPropsForm) {
                 </Select>
               </FormControl>
               <TextField
+                type="date"
                 label={errors.datadofato?.message ?? "datadofato"}
                 {...register("datadofato")}
                 error={!!errors.datadofato?.message}
@@ -221,7 +238,13 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.diah?.message ?? "diah"}
                   {...register("diah")}
                   error={!!errors.diah?.message}
-                  defaultValue={userData ? (userData.diah !== null && userData.diah !== "N/A" ? userData.diah : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.diah !== null && userData.diah !== "N/A"
+                        ? userData.diah
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"dom"}>Dom</MenuItem>
@@ -245,8 +268,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.turno?.message ?? "turno"}
                   {...register("turno")}
                   error={!!errors.turno?.message}
-                  defaultValue={userData ? (userData.turno !== null && userData.turno !== "N/A" ? userData.turno : '') : ''}
-                  >
+                  defaultValue={
+                    userData
+                      ? userData.turno !== null && userData.turno !== "N/A"
+                        ? userData.turno
+                        : ""
+                      : ""
+                  }
+                >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"madrugada"}>madrugada</MenuItem>
                   <MenuItem value={"manha"}>manha</MenuItem>
@@ -279,7 +308,13 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.zona?.message ?? "Zona"}
                   {...register("zona")}
                   error={!!errors.zona?.message}
-                  defaultValue={userData ? (userData.zona !== null && userData.zona !== "N/A" ? userData.zona : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.zona !== null && userData.zona !== "N/A"
+                        ? userData.zona
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"Norte"}>Norte</MenuItem>
@@ -337,7 +372,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.tipoarma1?.message ?? "tipoarma1"}
                   {...register("tipoarma1")}
                   error={!!errors.tipoarma1?.message}
-                  defaultValue={userData ? (userData.tipoarma1 !== null && userData.tipoarma1 !== "N/A" ? userData.tipoarma1 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.tipoarma1 !== null &&
+                        userData.tipoarma1 !== "N/A"
+                        ? userData.tipoarma1
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
@@ -369,7 +411,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.tipoarma2?.message ?? "tipoarma2"}
                   {...register("tipoarma2")}
                   error={!!errors.tipoarma2?.message}
-                  defaultValue={userData ? (userData.tipoarma2 !== null && userData.tipoarma2 !== "N/A" ? userData.tipoarma2 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.tipoarma2 !== null &&
+                        userData.tipoarma2 !== "N/A"
+                        ? userData.tipoarma2
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
@@ -411,7 +460,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao1?.message ?? "loclesao1"}
                   {...register("loclesao1")}
                   error={!!errors.loclesao1?.message}
-                  defaultValue={userData ? (userData.loclesao1 !== null && userData.loclesao1 !== "N/A" ? userData.loclesao1 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.loclesao1 !== null &&
+                        userData.loclesao1 !== "N/A"
+                        ? userData.loclesao1
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -429,7 +485,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao2?.message ?? "loclesao2"}
                   {...register("loclesao2")}
                   error={!!errors.loclesao2?.message}
-                  defaultValue={userData ? (userData.loclesao2 !== null && userData.loclesao2 !== "N/A" ? userData.loclesao2 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.loclesao2 !== null &&
+                        userData.loclesao2 !== "N/A"
+                        ? userData.loclesao2
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -447,7 +510,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao3?.message ?? "loclesao3"}
                   {...register("loclesao3")}
                   error={!!errors.loclesao3?.message}
-                  defaultValue={userData ? (userData.loclesao3 !== null && userData.loclesao3 !== "N/A" ? userData.loclesao3 : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.loclesao3 !== null &&
+                        userData.loclesao3 !== "N/A"
+                        ? userData.loclesao3
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -465,7 +535,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.hospitalizacao?.message ?? "hospitalizacao"}
                   {...register("hospitalizacao")}
                   error={!!errors.hospitalizacao?.message}
-                  defaultValue={userData ? (userData.hospitalizacao !== null && userData.hospitalizacao !== "N/A" ? userData.hospitalizacao : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.hospitalizacao !== null &&
+                        userData.hospitalizacao !== "N/A"
+                        ? userData.hospitalizacao
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -480,7 +557,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.violsexual?.message ?? "violsexual"}
                   {...register("violsexual")}
                   error={!!errors.violsexual?.message}
-                  defaultValue={userData ? (userData.violsexual !== null && userData.violsexual !== "N/A" ? userData.violsexual : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.violsexual !== null &&
+                        userData.violsexual !== "N/A"
+                        ? userData.violsexual
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -495,7 +579,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.latrocinio?.message ?? "latrocinio"}
                   {...register("latrocinio")}
                   error={!!errors.latrocinio?.message}
-                  defaultValue={userData ? (userData.latrocinio !== null && userData.latrocinio !== "N/A" ? userData.latrocinio : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.latrocinio !== null &&
+                        userData.latrocinio !== "N/A"
+                        ? userData.latrocinio
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -509,10 +600,19 @@ export function EditVictims(props: IPropsForm) {
                   {errors.localdeocorrencia?.message ?? "localdeocorrencia"}
                 </InputLabel>
                 <Select
-                  label={errors.localdeocorrencia?.message ?? "localdeocorrencia"}
+                  label={
+                    errors.localdeocorrencia?.message ?? "localdeocorrencia"
+                  }
                   {...register("localdeocorrencia")}
                   error={!!errors.localdeocorrencia?.message}
-                  defaultValue={userData ? (userData.localdeocorrencia !== null && userData.localdeocorrencia !== "N/A" ? userData.localdeocorrencia : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.localdeocorrencia !== null &&
+                        userData.localdeocorrencia !== "N/A"
+                        ? userData.localdeocorrencia
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"domicilio"}>domicilio</MenuItem>
@@ -560,7 +660,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.compexcomp?.message ?? "compexcomp"}
                   {...register("compexcomp")}
                   error={!!errors.compexcomp?.message}
-                  defaultValue={userData ? (userData.compexcomp !== null && userData.compexcomp !== "N/A" ? userData.compexcomp : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.compexcomp !== null &&
+                        userData.compexcomp !== "N/A"
+                        ? userData.compexcomp
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -573,10 +680,20 @@ export function EditVictims(props: IPropsForm) {
                     "presencafilhofamiliar"}
                 </InputLabel>
                 <Select
-                  label={errors.presencafilhofamiliar?.message ?? "presencafilhofamiliar"}
+                  label={
+                    errors.presencafilhofamiliar?.message ??
+                    "presencafilhofamiliar"
+                  }
                   {...register("presencafilhofamiliar")}
                   error={!!errors.presencafilhofamiliar?.message}
-                  defaultValue={userData ? (userData.presencafilhofamiliar !== null && userData.presencafilhofamiliar !== "N/A" ? userData.presencafilhofamiliar : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.presencafilhofamiliar !== null &&
+                        userData.presencafilhofamiliar !== "N/A"
+                        ? userData.presencafilhofamiliar
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -591,7 +708,14 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.gestacao?.message ?? "gestacao"}
                   {...register("gestacao")}
                   error={!!errors.gestacao?.message}
-                  defaultValue={userData ? (userData.gestacao !== null && userData.gestacao !== "N/A" ? userData.gestacao : '') : ''}
+                  defaultValue={
+                    userData
+                      ? userData.gestacao !== null &&
+                        userData.gestacao !== "N/A"
+                        ? userData.gestacao
+                        : ""
+                      : ""
+                  }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -613,7 +737,7 @@ export function EditVictims(props: IPropsForm) {
               <TextField
                 variant="filled"
                 label={errors.sites_in_bulk?.message ?? "Link"}
-                sx={{width: '93%', mb: 1}}
+                sx={{ width: "93%", mb: 1 }}
                 {...register("sites_in_bulk")}
                 error={!!errors.sites_in_bulk?.message}
               />

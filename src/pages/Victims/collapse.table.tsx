@@ -21,6 +21,7 @@ import { deleteVictims } from "../../service/victims";
 import { formatarData } from "../../utils/formatDate";
 import { EditVictims } from "./editVictims";
 import { ModalDelete } from "../../components/ModalDelete/ModalDelete";
+import { formatDate } from "../../utils/date";
 
 export interface IRowsPropsVictims {
   datadofato: string;
@@ -129,7 +130,7 @@ function Row(props: IRowsPropsVictims) {
       });
   };
 
-  const dataFormatada = formatarData(props.datadofato);
+  const dataFormatada = formatDate(props.datadofato);
 
   // Função para converter a string de sites_in_bulk em uma lista de links
   const parseSitesInBulk = (sitesInBulk: string) => {

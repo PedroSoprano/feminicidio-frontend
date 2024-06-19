@@ -23,7 +23,6 @@ import { saveAs } from "file-saver";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
 import { CreateVictim } from "./createVictim";
-import { format } from 'date-fns';
 
 export function Victims() {
   const [rows, setRows] = useState([]);

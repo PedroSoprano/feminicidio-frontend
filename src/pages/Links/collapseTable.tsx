@@ -22,7 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-
+import { formatDate } from "../../utils/date";
 export interface Row {
   nome: string;
   link: string;
@@ -34,8 +34,8 @@ export interface Row {
   vitima: any;
   tagsEncontradas: string;
   refreshList: () => void;
+  createdAt: string
 }
-
 export interface Props {
   search: { column: string; value: string };
   filterData: Row[]
@@ -109,6 +109,9 @@ export function Row(props: Row) {
         <TableCell align="left">
           {props.lido}
           <Switch onChange={handleChangeLido} checked={props.lido} />
+        </TableCell>
+        <TableCell align="left">
+        {formatDate(props.createdAt)}
         </TableCell>
         <TableCell>
           <IconButton onClick={() => DeleteSite(props.id)}>
@@ -221,7 +224,8 @@ export default function CollapsibleTable({ search, filterData }: Props) {
               <TableCell align="left">Assassinato?</TableCell>
               <TableCell align="left">Classificação</TableCell>
               <TableCell align="left">Lido</TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="left">Data</TableCell>
+              <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

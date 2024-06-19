@@ -39,10 +39,9 @@ export const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number(),
+    filhosdescrever: Yup.number().positive("Deve ser um número positivo").optional(),
     lat: Yup.string(),
     lng: Yup.string(),
-    sites_in_bulk: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
