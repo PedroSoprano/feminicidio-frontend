@@ -26,6 +26,15 @@ import { IVictims } from "../../models/victims";
 import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
 import * as Yup from "yup";
+import { formatISO } from "date-fns";
+
+const formatLatLng = (value: any) => {
+  const parts = value.split(".");
+  if (parts[0].length === 1) {
+    parts[0] = "0" + parts[0];
+  }
+  return parts.join(".").padEnd(19, "0");
+};
 
 const schema = Yup.object()
   .shape({
@@ -53,9 +62,22 @@ const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number().positive("Deve ser um número positivo").optional(),
+    filhosdescrever: Yup.number()
+      .min(0, "Deve ser um número positivo")
+      .integer("Deve ser um número inteiro")
+      .optional(),
     lat: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
     lng: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
     sites_in_bulk: Yup.string(),
   })
   .required();
@@ -100,7 +122,7 @@ export function EditVictims(props: IPropsForm) {
     Object.entries(data).forEach(([key, value]) => {
       if (key === "datadofato") {
         const date = new Date(value as string);
-        const formattedDate = date.toISOString().split("T")[0]; // Converte a data para o formato "yyyy-mm-dd"
+        const formattedDate = date.toISOString().split("T")[0];
         setValue(key as keyof IVictims, formattedDate || "");
       } else {
         setValue(key as keyof IVictims, value || "");
@@ -111,10 +133,19 @@ export function EditVictims(props: IPropsForm) {
   const onSubmit = async (data: FormData) => {
     try {
       const { datadofato, ...restData } = data;
+      let formattedDate;
+  
+      if (datadofato) {
+        formattedDate = formatISO(new Date(datadofato), { representation: 'complete' });
+      } else {
+        throw new Error('Data do fato não está definida');
+      }
+  
       const formattedData = {
         ...restData,
-        datadofato: datadofato + "T00:00:00Z",
+        datadofato: formattedDate,
       };
+      
       await updateVictims(props.vitimaId, formattedData);
       toast.success("Informações da vítima atualizadas com sucesso");
       addCount();
@@ -122,7 +153,7 @@ export function EditVictims(props: IPropsForm) {
       reset();
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.detail || "Erro ao atualizar dados da vítima"
+        error?.response?.data?.detail || error.message || "Erro ao atualizar dados da vítima"
       );
     }
   };
@@ -317,12 +348,13 @@ export function EditVictims(props: IPropsForm) {
                   }
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
-                  <MenuItem value={"Norte"}>Norte</MenuItem>
-                  <MenuItem value={"Oeste"}>Oeste</MenuItem>
-                  <MenuItem value={"Leste"}>Leste</MenuItem>
-                  <MenuItem value={"Sul"}>Sul</MenuItem>
-                  <MenuItem value={"Centro-Oeste"}>Centro-Oeste</MenuItem>
-                  <MenuItem value={"Centro-Sul"}>Centro-Sul</MenuItem>
+                  <MenuItem value={"norte"}>norte</MenuItem>
+                  <MenuItem value={"oeste"}>oeste</MenuItem>
+                  <MenuItem value={"leste"}>leste</MenuItem>
+                  <MenuItem value={"sul"}>sul</MenuItem>
+                  <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
+                  <MenuItem value={"centrosul"}>centrosul</MenuItem>
+                  <MenuItem value={"rural"}>rural</MenuItem>
                 </Select>
               </FormControl>
               <TextField
@@ -723,11 +755,12 @@ export function EditVictims(props: IPropsForm) {
                 </Select>
               </FormControl>
               <TextField
-                type="number"
                 label={errors.filhosdescrever?.message ?? "filhosdescrever"}
                 {...register("filhosdescrever")}
                 error={!!errors.filhosdescrever?.message}
                 variant="filled"
+                type="number"
+                inputProps={{ min: 0 }}
               />
             </Box>
             <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>

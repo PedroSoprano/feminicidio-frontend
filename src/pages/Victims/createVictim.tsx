@@ -29,6 +29,14 @@ interface IPropsForm {
   idSite?: string;
 }
 
+const formatLatLng = (value: any) => {
+  const parts = value.split(".");
+  if (parts[0].length === 1) {
+    parts[0] = "0" + parts[0];
+  }
+  return parts.join(".").padEnd(19, "0");
+};
+
 export const schema = Yup.object()
   .shape({
     datadofato: Yup.date().required(),
@@ -55,9 +63,22 @@ export const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number().positive("Deve ser um número positivo").nullable(),
+    filhosdescrever: Yup.number()
+      .min(0, "Deve ser um número positivo")
+      .integer("Deve ser um número inteiro")
+      .optional(),
     lat: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
     lng: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
     sites_in_bulk: Yup.string(),
   })
   .required();
@@ -247,12 +268,13 @@ export function CreateVictim(props: IPropsForm) {
                   defaultValue={""}
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
-                  <MenuItem value={"Norte"}>Norte</MenuItem>
-                  <MenuItem value={"Oeste"}>Oeste</MenuItem>
-                  <MenuItem value={"Leste"}>Leste</MenuItem>
-                  <MenuItem value={"Sul"}>Sul</MenuItem>
-                  <MenuItem value={"Centro-Oeste"}>Centro-Oeste</MenuItem>
-                  <MenuItem value={"Centro-Sul"}>Centro-Sul</MenuItem>
+                  <MenuItem value={"norte"}>norte</MenuItem>
+                  <MenuItem value={"oeste"}>oeste</MenuItem>
+                  <MenuItem value={"leste"}>leste</MenuItem>
+                  <MenuItem value={"sul"}>sul</MenuItem>
+                  <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
+                  <MenuItem value={"centrosul"}>centrosul</MenuItem>
+                  <MenuItem value={"rural"}>rural</MenuItem>
                 </Select>
               </FormControl>
               <TextField
@@ -569,11 +591,12 @@ export function CreateVictim(props: IPropsForm) {
                 </Select>
               </FormControl>
               <TextField
-                type="number"
                 label={errors.filhosdescrever?.message ?? "filhosdescrever"}
                 {...register("filhosdescrever")}
                 error={!!errors.filhosdescrever?.message}
                 variant="filled"
+                type="number"
+                inputProps={{ min: 0 }}
               />
             </Box>
             <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
@@ -583,7 +606,7 @@ export function CreateVictim(props: IPropsForm) {
               <TextField
                 variant="filled"
                 label={errors.sites_in_bulk?.message ?? "Link"}
-                sx={{width: '93%', mb: 1}}
+                sx={{ width: "93%", mb: 1 }}
                 {...register("sites_in_bulk")}
                 error={!!errors.sites_in_bulk?.message}
               />

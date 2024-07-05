@@ -14,12 +14,12 @@ export function Dashboard() {
     <>
       {loadingMetabase && (
         <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "70vh",
-        }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
         >
           <CircularProgress />
         </Box>
@@ -31,7 +31,6 @@ export function Dashboard() {
           frameBorder="0"
           width="1650"
           height="670"
-          allowTransparency= {true}
           onLoad={handleMetabaseLoad}
         />
       </Box>

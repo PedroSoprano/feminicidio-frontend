@@ -180,12 +180,12 @@ export default function CollapsibleTable({ search, filterData }: Props) {
 
   useEffect(() => {
     setLoading(true);
-    if (!findSitesFetched) {
+  /*   if (!findSitesFetched) {
       api.get("/api/findSites").then((res) => {
         setLoading(false);
         setFindSitesFetched(true);
       });
-    }
+    } */
     api
       .get("/api/site")
       .then((res) => {

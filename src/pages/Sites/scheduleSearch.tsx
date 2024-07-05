@@ -131,6 +131,7 @@ export function CreateProgram() {
               InputLabelProps={{
                 shrink: true,
               }}
+              inputProps={{ min: 0 }}
             />
           </DialogContent>
           {loading ? (

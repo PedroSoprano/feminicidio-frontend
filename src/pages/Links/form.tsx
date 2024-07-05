@@ -13,6 +13,14 @@ import {
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 
+const formatLatLng = (value: any) => {
+  const parts = value.split(".");
+  if (parts[0].length === 1) {
+    parts[0] = "0" + parts[0];
+  }
+  return parts.join(".").padEnd(19, "0");
+};
+
 export const schema = Yup.object()
   .shape({
     datadofato: Yup.date(),
@@ -39,9 +47,22 @@ export const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number().positive("Deve ser um número positivo").optional(),
+    filhosdescrever: Yup.number()
+      .min(0, "Deve ser um número positivo")
+      .integer("Deve ser um número inteiro")
+      .optional(),
     lat: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
     lng: Yup.string(),
+/*       .matches(
+        /^-?\d{1}\.\d{18}$/,
+        "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
+      )
+      .transform(formatLatLng), */
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -70,7 +91,7 @@ export function Form(props: IPropsForm) {
         });
     });
   };
-  
+
   return (
     <>
       <Box
@@ -204,6 +225,7 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"sul"}>sul</MenuItem>
             <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
             <MenuItem value={"centrosul"}>centrosul</MenuItem>
+            <MenuItem value={"rural"}>rural</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -432,11 +454,12 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <TextField
-          type="number"
           label={errors.filhosdescrever?.message ?? "filhosdescrever"}
           {...register("filhosdescrever")}
           error={!!errors.filhosdescrever?.message}
           variant="filled"
+          type="number"
+          inputProps={{ min: 0 }}
         />
         <TextField
           label={errors.lat?.message ?? "X_Lati"}
@@ -450,11 +473,15 @@ export function Form(props: IPropsForm) {
           error={!!errors.lng?.message}
           variant="filled"
         />
-        <Box sx={{ marginTop: "10px", width: "308%", display: 'flex', justifyContent: 'end' }}>
-          <Button
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-          >
+        <Box
+          sx={{
+            marginTop: "10px",
+            width: "308%",
+            display: "flex",
+            justifyContent: "end",
+          }}
+        >
+          <Button variant="contained" onClick={handleSubmit(onSubmit)}>
             Salvar
           </Button>
         </Box>

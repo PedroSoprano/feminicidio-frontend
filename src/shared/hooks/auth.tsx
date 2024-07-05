@@ -1,59 +1,66 @@
-import React, {
-  createContext,
-  ReactNode,
-  useContext,
-  useState,
-} from 'react';
+import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react';
 import Cookies from 'universal-cookie';
 import { ILogin } from '../../models/login';
-import { authToken, login } from '../../service/auth';
-import { validation } from '../../service/api';
+import { login } from '../../service/auth';
+import api from '../../service/api';
 import { toast } from 'react-toastify';
 
 interface TokenContextData {
   permission?: Boolean;
   Login: (payload: ILogin) => void;
-  token: string;
+  token: any;
   username: string;
-  perfil: string
+  perfil: string;
 }
 
 interface TokenProviderProps {
   children: ReactNode;
 }
+
 const TokenContext = createContext<TokenContextData>({} as TokenContextData);
 
 export function TokenProvider({ children }: TokenProviderProps) {
   const cookies = new Cookies();
 
   const [permission, setPermission] = useState(false);
-  const [perfil, setPerfil] = useState("")
-  const [token, setToken] = useState(cookies.get('@feminicidio_token'));
-  const [username, setUsername] = useState("")
+  const [perfil, setPerfil] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
 
-  window.onload = async function () {
+  const setAxiosToken = (token: string | null) => {
     if (token) {
-      setPermission(true)
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      delete api.defaults.headers.common['Authorization'];
     }
-  }
+  };
+
+  useEffect(() => {
+    const storedToken = cookies.get('@feminicidio_token');
+    if (storedToken) {
+      setToken(storedToken);
+      setAxiosToken(storedToken);
+      setPermission(true);
+    }
+  }, []);
 
   async function Login(payload: ILogin) {
     await login(payload)
-      .then(async response => {
-        cookies.set("@feminicidio_token", response.data.access_token);
-        await validation();
-        setToken(response.data.access_token);
-        setUsername(response.data.nome)
-        cookies.set("usernamef", response.data.nome)
-        cookies.set("idf", response.data.id)
+      .then(response => {
+        const token = response.data.access_token;
+        cookies.set("@feminicidio_token", token);
+        setAxiosToken(token);
+        setToken(token);
+        setUsername(response.data.nome);
+        cookies.set("usernamef", response.data.nome);
+        cookies.set("idf", response.data.id);
         setPermission(true);
-        setPerfil(response.data.permission.toLowerCase())
-        toast.success('Login realizado com sucesso')
+        setPerfil(response.data.permission.toLowerCase());
+        toast.success('Login realizado com sucesso');
       })
       .catch(error => {
         setPermission(false);
         if (error?.response.status === 401) {
-          setPermission(false);
           toast.error(error?.response.data.detail);
         }
       });
