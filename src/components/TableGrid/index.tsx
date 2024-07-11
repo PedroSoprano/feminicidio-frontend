@@ -74,9 +74,9 @@ export function TableGrid(props: TableGridProps) {
               pageSize: 25,
             },
           },
-          sorting: {
+/*           sorting: {
             sortModel: [{ field: 'nome', sort: 'asc' }],
-          },
+          }, */
         }}
         pageSizeOptions={[25]}
         disableColumnMenu

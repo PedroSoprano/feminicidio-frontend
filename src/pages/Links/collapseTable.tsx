@@ -224,7 +224,7 @@ export default function CollapsibleTable({ search, filterData }: Props) {
               <TableCell align="left">Assassinato?</TableCell>
               <TableCell align="left">Classificação</TableCell>
               <TableCell align="left">Lido</TableCell>
-              <TableCell align="left">Data</TableCell>
+              <TableCell align="left">Data da captura</TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>

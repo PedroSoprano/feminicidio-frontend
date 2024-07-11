@@ -68,13 +68,13 @@ export const schema = Yup.object()
       .integer("Deve ser um número inteiro")
       .optional(),
     lat: Yup.string(),
-/*       .matches(
+    /*       .matches(
         /^-?\d{1}\.\d{18}$/,
         "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
       )
       .transform(formatLatLng), */
     lng: Yup.string(),
-/*       .matches(
+    /*       .matches(
         /^-?\d{1}\.\d{18}$/,
         "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
       )
@@ -333,18 +333,23 @@ export function CreateVictim(props: IPropsForm) {
                   <MenuItem value={"tercado"}>tercado</MenuItem>
                   <MenuItem value={"enxada"}>enxada</MenuItem>
                   <MenuItem value={"corda"}>corda</MenuItem>
-                  <MenuItem value={"fio-eletrico"}>fio eletrico</MenuItem>
-                  <MenuItem value={"chave-de-fenda"}>chave de fenda</MenuItem>
-                  <MenuItem value={"arma-de-fogo"}>arma de fogo</MenuItem>
-                  <MenuItem value={"forca-corporal"}>forca corporal</MenuItem>
-                  <MenuItem value={"substancias-inflamaveis"}>
+                  <MenuItem value={"fio eletrico"}>fio eletrico</MenuItem>
+                  <MenuItem value={"chave de fenda"}>chave de fenda</MenuItem>
+                  <MenuItem value={"arma de fogo"}>arma de fogo</MenuItem>
+                  <MenuItem value={"forca corporal"}>forca corporal</MenuItem>
+                  <MenuItem value={"substancias inflamaveis"}>
                     substancias inflamaveis
                   </MenuItem>
-                  <MenuItem value={"objeto-de-madeira"}>
+                  <MenuItem value={"objeto de madeira"}>
                     objeto de madeira
                   </MenuItem>
-                  <MenuItem value={"submersao-em-colecao-hidrica"}>
+                  <MenuItem value={"submersao em colecao hidrica"}>
                     submersao em colecao hidrica
+                  </MenuItem>
+                  <MenuItem
+                    value={"ligadura ou laco com outro material sintetico"}
+                  >
+                    ligadura ou laco com outro material sintetico
                   </MenuItem>
                 </Select>
               </FormControl>
@@ -365,18 +370,23 @@ export function CreateVictim(props: IPropsForm) {
                   <MenuItem value={"tercado"}>tercado</MenuItem>
                   <MenuItem value={"enxada"}>enxada</MenuItem>
                   <MenuItem value={"corda"}>corda</MenuItem>
-                  <MenuItem value={"fio-eletrico"}>fio eletrico</MenuItem>
-                  <MenuItem value={"chave-de-fenda"}>chave de fenda</MenuItem>
-                  <MenuItem value={"arma-de-fogo"}>arma de fogo</MenuItem>
-                  <MenuItem value={"forca-corporal"}>forca corporal</MenuItem>
-                  <MenuItem value={"substancias-inflamaveis"}>
+                  <MenuItem value={"fio eletrico"}>fio eletrico</MenuItem>
+                  <MenuItem value={"chave de fenda"}>chave de fenda</MenuItem>
+                  <MenuItem value={"arma de fogo"}>arma de fogo</MenuItem>
+                  <MenuItem value={"forca corporal"}>forca corporal</MenuItem>
+                  <MenuItem value={"substancias inflamaveis"}>
                     substancias inflamaveis
                   </MenuItem>
-                  <MenuItem value={"objeto-de-madeira"}>
+                  <MenuItem value={"objeto de madeira"}>
                     objeto de madeira
                   </MenuItem>
-                  <MenuItem value={"submersao-em-colecao-hidrica"}>
+                  <MenuItem value={"submersao em colecao hidrica"}>
                     submersao em colecao hidrica
+                  </MenuItem>
+                  <MenuItem
+                    value={"ligadura ou laco com outro material sintetico"}
+                  >
+                    ligadura ou laco com outro material sintetico
                   </MenuItem>
                 </Select>
               </FormControl>
